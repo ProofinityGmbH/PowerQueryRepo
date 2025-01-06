@@ -3,15 +3,14 @@
 	// __DataSource = "Standard", "SideLoad"
 	// Connectoren "SQL Server Datenbank", "Power BI Dataflows (Legacy)", "Dataflows", "SharePoint-Ordner"
 	GetEntityFromDataSource = (
-	__DataSource as text,  // "Power BI Dataflow"  "SQL-Server"    "SharePoint-Folder"
-	optional __Server as text,  //                      __SqlInstance   !!! nur via globalem Parameter !!!
-	optional __DataBase as text,  //                      __SqlDataBase   __SharePointFolderPath
+	__DataSource as text,
 	optional __Schema as text,  //                      __SqlSchema     __FileName
 	optional __Entity as text // __Entity             __SqlObject     __Entity
 	// optional __SqlQuery as nullable text     // lassen wir bis auf Weiteres deaktiviert
 	) as table =>
 	let
-	  _SharePointFolderPath = __DataBase,
+	  // _SharePointFolderPath = __DataBase,
+	  _SharePointFolderPath = @#"Standard - SharePointFolderPath",
 	  _FileName = __Schema,
 	  _Entity = __Entity,
 	  _Schema = if __Schema is null then "dbo" else __Schema,
