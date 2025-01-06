@@ -533,7 +533,8 @@
 	Value.VersionIdentity = Value.VersionIdentity, 
 	Value.Versions = Value.Versions, 
 	Value.ViewError = Value.ViewError, 
-	Value.ViewFunction = Value.ViewFunction
+	Value.ViewFunction = Value.ViewFunction, 
+	@#"Standard - DataSource Connector" = @#"Standard - DataSource Connector" 
 	],
 	// Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
 	// __DataSource = "Standard", "SideLoad"
