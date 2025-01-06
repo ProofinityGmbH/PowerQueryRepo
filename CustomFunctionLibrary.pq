@@ -4,12 +4,12 @@
 	// Connectoren "SQL Server Datenbank", "Power BI Dataflows (Legacy)", "Dataflows", "SharePoint-Ordner"
 	GetEntityFromDataSource = () as table =>
 	let
-		Standard_DataSource_Connector = "{Standard_DataSource_Connector}",
-		Standard_SharePointSiteUrl = "{Standard_SharePointSiteUrl}",
-		Standard_SharePointFolderPath = "{Standard_SharePointFolderPath}",
-	  __DataSource = "{DataSource}",
-	  __Schema = "{Schema}",
-	  __Entity = "{Entity}",
+		Standard_DataSource_Connector = "SharePoint Ordner",
+		Standard_SharePointSiteUrl = "https://proofinity.sharepoint.com/sites/PowerBIProjekttools",
+		Standard_SharePointFolderPath = "Freigegebene Dokumente/Power Plattform Solutions/001_Proofinity/Contoso Data Generator/2.0.0/csv-10k",
+		__DataSource = "{DataSource}",
+		__Schema = "{Schema}",
+		__Entity = "{Entity}",
 	  _FileName = __Schema,
 	  _Entity = __Entity,
 	  _Schema = if __Schema is null then "dbo" else __Schema,
@@ -24,10 +24,10 @@
 		  and _FileName <> null
 		then
 		  let
-			Source = SharePoint.Files("{Standard_SharePointSiteUrl}", [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
+			Source = SharePoint.Files("https://proofinity.sharepoint.com/sites/PowerBIProjekttools", [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
 			FilteredFile = Table.SelectRows(
 			  Source,
-			  each Text.Contains([Folder Path], Standard_SharePointFolderPath) and [Name] = _FileName
+			  each Text.Contains([Folder Path], "Freigegebene Dokumente/Power Plattform Solutions/001_Proofinity/Contoso Data Generator/2.0.0/csv-10k") and [Name] = _FileName
 			),
 			IsCsv = Text.EndsWith(_FileName, ".csv"),
 			IsExcel = Text.EndsWith(_FileName, ".xlsx") or Text.EndsWith(_FileName, ".xls"),
