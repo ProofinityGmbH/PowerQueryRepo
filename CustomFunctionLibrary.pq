@@ -24,7 +24,7 @@
 		  and _FileName <> null
 		then
 		  let
-			Source = SharePoint.Files(Standard_SharePointSiteUrl, [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
+			Source = SharePoint.Files("{Standard_SharePointSiteUrl}", [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
 			FilteredFile = Table.SelectRows(
 			  Source,
 			  each Text.Contains([Folder Path], Standard_SharePointFolderPath) and [Name] = _FileName
