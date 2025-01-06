@@ -1,17 +1,5 @@
 [
-	#"Standard - DataSource Connector" = #"Standard - DataSource Connector",
-	#"Standard - WorkspaceId" = #"Standard - WorkspaceId",
-	#"Standard - DataflowId" = #"Standard - DataflowId",
-	#"Standard - SqlInstance" = #"Standard - SqlInstance",
-	#"Standard - SqlDatabase" = #"Standard - SqlDatabase",
-	#"Standard - SharePointSiteUrl" = #"Standard - SharePointSiteUrl",
-	#"Standard - SharePointFolderPath" = #"Standard - SharePointFolderPath",
-	PowerPlatform.Dataflows = PowerPlatform.Dataflows,
-	SharePoint.Files = SharePoint.Files,
-	Csv.Document = Csv.Document,
-	QuoteStyle.None = QuoteStyle.None,
-	Excel.Workbook = Excel.Workbook,
-        // Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
+	// Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
 	// __DataSource = "Standard", "SideLoad"
 	// Connectoren "SQL Server Datenbank", "Power BI Dataflows (Legacy)", "Dataflows", "SharePoint-Ordner"
 	GetEntityFromDataSource = (
