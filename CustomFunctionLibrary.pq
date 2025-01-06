@@ -147,7 +147,7 @@
 	  Result =
 		if Entity_DF_Std <> null then
 		  Entity_DF_Std
-		elseif Entity_SP_Std <> null then
+		else if Entity_SP_Std <> null then
 		  Entity_SP_Std		
 		else
 		  null
