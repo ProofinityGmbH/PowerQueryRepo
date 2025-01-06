@@ -2,13 +2,14 @@
 	// Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
 	// __DataSource = "Standard", "SideLoad"
 	// Connectoren "SQL Server Datenbank", "Power BI Dataflows (Legacy)", "Dataflows", "SharePoint-Ordner"
-	GetEntityFromDataSource = (
-	__DataSource as text,
-	optional __Schema as text,  //                      __SqlSchema     __FileName
-	optional __Entity as text // __Entity             __SqlObject     __Entity
-	// optional __SqlQuery as nullable text     // lassen wir bis auf Weiteres deaktiviert
-	) as table =>
+	GetEntityFromDataSource = () as table =>
 	let
+		Standard_DataSource_Connector = "{Standard_DataSource_Connector}",
+		Standard_SharePointSiteUrl = "{Standard_SharePointSiteUrl}",
+		Standard_SharePointFolderPath = "{Standard_SharePointFolderPath}",
+	  __DataSource = "{DataSource}",
+	  __Schema = "{Schema}",
+	  __Entity = "{Entity}",
 	  _FileName = __Schema,
 	  _Entity = __Entity,
 	  _Schema = if __Schema is null then "dbo" else __Schema,
@@ -17,16 +18,16 @@
 		Entity_SP_Std =
 		if __DataSource
 		  = "Standard"
-		  and @#"Standard - DataSource Connector" = "SharePoint Ordner"
-		  and @#"Standard - SharePointSiteUrl" <> null
-		  and @#"Standard - SharePointFolderPath" <> null
+		  and Standard_DataSource_Connector = "SharePoint Ordner"
+		  and Standard_SharePointSiteUrl <> null
+		  and Standard_SharePointFolderPath <> null
 		  and _FileName <> null
 		then
 		  let
-			Source = SharePoint.Files(@#"Standard - SharePointSiteUrl", [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
+			Source = SharePoint.Files(Standard_SharePointSiteUrl, [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
 			FilteredFile = Table.SelectRows(
 			  Source,
-			  each Text.Contains([Folder Path], @#"Standard - SharePointFolderPath") and [Name] = _FileName
+			  each Text.Contains([Folder Path], Standard_SharePointFolderPath) and [Name] = _FileName
 			),
 			IsCsv = Text.EndsWith(_FileName, ".csv"),
 			IsExcel = Text.EndsWith(_FileName, ".xlsx") or Text.EndsWith(_FileName, ".xls"),
@@ -71,23 +72,23 @@
 			Entity
 		else if __DataSource
 		  = "Standard"
-		  and @#"Standard - DataSource Connector" = "SharePoint Ordner"
+		  and Standard_DataSource_Connector = "SharePoint Ordner"
 		then
 		  error [
 			Reason = Text.Combine(
 			  {
 				"Parameter for using 'Standard - DataSource Connector' = '",
-				Text.From(@#"Standard - DataSource Connector"),
+				Text.From(Standard_DataSource_Connector),
 				"' missing."
 			  }
 			),
 			Message = "Check the detailed Message for current parametrization.",
 			Detail = Text.Combine(
 			  {
-				"@Standard - SharePointSiteUrl:",
-				Text.From(@#"Standard - SharePointSiteUrl"),
-				", _SharePointFolderPath:",
-				Text.From(@#"Standard - SharePointFolderPath"),
+				"Standard_SharePointSiteUrl:",
+				Text.From(Standard_SharePointSiteUrl),
+				", SharePointFolderPath:",
+				Text.From(Standard_SharePointFolderPath),
 				", _FileName:",
 				Text.From(_FileName)
 			  },
