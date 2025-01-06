@@ -7,21 +7,6 @@
 			#"Standard - SharePointSiteUrl" = #"Standard - SharePointSiteUrl",
 			#"Standard - SharePointFolderPath" = #"Standard - SharePointFolderPath",
 			PowerPlatform.Dataflows = PowerPlatform.Dataflows,
-			SharePoint.Files = SharePoint.Files,
-			Csv.Document = Csv.Document,
-			QuoteStyle.None = QuoteStyle.None,
-			Excel.Workbook = Excel.Workbook,
-			Table.SelectRows = Table.SelectRows,
-			Text.Contains = Text.Contains,
-			Text.EndsWith = Text.EndsWith,
-			Table.PromoteHeaders = Table.PromoteHeaders,
-			List.NonNullCount = List.NonNullCount,
-			Record.FieldValues = Record.FieldValues,
-			Table.ColumnNames = Table.ColumnNames,
-			Table.TransformColumnTypes = Table.TransformColumnTypes,
-			List.Transform = List.Transform,
-			Text.Combine = Text.Combine,
-			Text.From = Text.From,
 
         // Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
 	// __DataSource = "Standard", "SideLoad"
