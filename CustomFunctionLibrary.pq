@@ -1,3 +1,5 @@
+Version 20250106: Wir haben Bugs in der Funktion GetEntityFromDataSource für den SharePoint gefixt.
+
 [
 	// Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
 	// __DataSource = "Standard", "SideLoad"
