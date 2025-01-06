@@ -1,5 +1,6 @@
 [
-	// Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
+	#"Standard - DataSource Connector" = #"Standard - DataSource Connector",
+        // Funktion um tabellenbasierte Daten von unterschiedlichen Quellen zu laden
 	// __DataSource = "Standard", "SideLoad"
 	// Connectoren "SQL Server Datenbank", "Power BI Dataflows (Legacy)", "Dataflows", "SharePoint-Ordner"
 	GetEntityFromDataSource = (
