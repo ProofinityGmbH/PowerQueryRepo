@@ -143,7 +143,7 @@
 		else
 		  null,
 
-	  // final result
+	  // final result 
 	  Result =
 		if Entity_DF_Std <> null then
 		  Entity_DF_Std
