@@ -555,54 +555,9 @@
 	// optional __SqlQuery as nullable text     // lassen wir bis auf Weiteres deaktiviert
 	) as table =>
 	let
-	  // _SharePointFolderPath = __DataBase,
-	  _SharePointFolderPath = @#"Standard - SharePointFolderPath",
 	  _FileName = __Schema,
 	  _Entity = __Entity,
 	  _Schema = if __Schema is null then "dbo" else __Schema,
-	  // Prüfen, ob die jeweils nötigen Parameter vorhanden sind
-	  // bzgl WorkspaceId & DataflowId quasi fix angelegt werden. Dazu einfach den Block kopieren und entsprechend anpassen.
-	  // 'Microsoft Fabric - Dataflows' = 'Power Platform - Dataflows'
-	  Entity_DF_Std =
-		if __DataSource
-		  = "Standard"
-		  and @#"Standard - DataSource Connector" = "Dataflows"
-		  and @#"Standard - WorkspaceId" <> null
-		  and @#"Standard - DataflowId" <> null
-		  and _Entity <> null
-		then
-		  let
-			Connector  = PowerPlatform.Dataflows(null),
-			Workspaces = Connector{[Id = "Workspaces"]}[Data],
-			Workspace  = Workspaces{[workspaceId = @#"Standard - WorkspaceId"]}[Data],  // << muss beides via globalem Parameter passieren 
-			Dataflow   = Workspace{[dataflowId = @#"Standard - DataflowId"]}[Data],  // << sonst wird es im DataLineage nicht verbunden
-			Entity     = Dataflow{[entity = _Entity]}[Data]
-		  in
-			Entity
-		else if __DataSource = "Standard" and @#"Standard - DataSource Connector" = "Dataflows" then
-		  error [
-			Reason = Text.Combine(
-			  {
-				"Parameter for using 'Standard - DataSource Connector' = '",
-				Text.From(@#"Standard - DataSource Connector"),
-				"' missing."
-			  }
-			),
-			Message = "Check the detailed Message for current parametrization.",
-			Detail = Text.Combine(
-			  {
-				"@Standard - WorkspaceId:",
-				Text.From(@#"Standard - WorkspaceId"),
-				", @Standard - DataflowId:",
-				Text.From(@#"Standard - DataflowId"),
-				", _Entity:",
-				Text.From(_Entity)
-			  },
-			  " "
-			)
-		  ]
-		else
-		  null,
 
 		// "SharePoint Ordner"
 		Entity_SP_Std =
@@ -610,14 +565,14 @@
 		  = "Standard"
 		  and @#"Standard - DataSource Connector" = "SharePoint Ordner"
 		  and @#"Standard - SharePointSiteUrl" <> null
-		  and _SharePointFolderPath <> null
+		  and @#"Standard - SharePointFolderPath" <> null
 		  and _FileName <> null
 		then
 		  let
 			Source = SharePoint.Files(@#"Standard - SharePointSiteUrl", [ApiVersion = 15]),  // << muss via globalem Parameter passieren, sonst ist es i.d. Cloud nicht aktualisierbar (= "dynamic data sources")
 			FilteredFile = Table.SelectRows(
 			  Source,
-			  each Text.Contains([Folder Path], _SharePointFolderPath) and [Name] = _FileName
+			  each Text.Contains([Folder Path], @#"Standard - SharePointFolderPath") and [Name] = _FileName
 			),
 			IsCsv = Text.EndsWith(_FileName, ".csv"),
 			IsExcel = Text.EndsWith(_FileName, ".xlsx") or Text.EndsWith(_FileName, ".xls"),
@@ -678,7 +633,7 @@
 				"@Standard - SharePointSiteUrl:",
 				Text.From(@#"Standard - SharePointSiteUrl"),
 				", _SharePointFolderPath:",
-				Text.From(_SharePointFolderPath),
+				Text.From(@#"Standard - SharePointFolderPath"),
 				", _FileName:",
 				Text.From(_FileName)
 			  },
@@ -690,9 +645,7 @@
 
 	  // final result 
 	  Result =
-		if Entity_DF_Std <> null then
-		  Entity_DF_Std
-		else if Entity_SP_Std <> null then
+		if Entity_SP_Std <> null then
 		  Entity_SP_Std		
 		else
 		  null
